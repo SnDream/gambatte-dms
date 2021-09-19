@@ -35,6 +35,7 @@ public:
 	MemPtrs();
 	~MemPtrs();
 	void reset(unsigned rombanks, unsigned rambanks, unsigned wrambanks);
+	bool reset(unsigned rombanks, unsigned rambanks, unsigned wrambanks, const char *mmapfile);
 
 	unsigned char const * rmem(unsigned area) const { return rmem_[area]; }
 	unsigned char * wmem(unsigned area) const { return wmem_[area]; }
@@ -69,6 +70,7 @@ private:
 	unsigned char *rsrambankptr_;
 	unsigned char *wsrambankptr_;
 	unsigned char *memchunk_;
+	unsigned char *mmapchunk_;
 	unsigned char *rambankdata_;
 	unsigned char *wramdataend_;
 	OamDmaSrc oamDmaSrc_;

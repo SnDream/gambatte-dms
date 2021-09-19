@@ -639,6 +639,7 @@ LoadRes Cartridge::loadROM(std::string const &romfile,
 	defaultSaveBasePath_.clear();
 	ggUndoList_.clear();
 	mbc_.reset();
+#ifndef USE_MMAP
 	memptrs_.reset(rombanks, rambanks, cgb ? 8 : 2);
 	rtc_.set(false, 0);
 
@@ -651,6 +652,11 @@ LoadRes Cartridge::loadROM(std::string const &romfile,
 
 	if (rom->fail())
 		return LOADRES_IO_ERROR;
+#else
+	if (!memptrs_.reset(rombanks, rambanks, cgb ? 8 : 2, romfile.c_str())) {
+		return LOADRES_IO_ERROR;
+	}
+#endif
 
 	defaultSaveBasePath_ = stripExtension(romfile);
 

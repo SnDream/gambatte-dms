@@ -20,6 +20,12 @@
 #include <algorithm>
 #include <cstring>
 
+#include <sys/mman.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 namespace gambatte {
 
 MemPtrs::MemPtrs()
@@ -31,6 +37,7 @@ MemPtrs::MemPtrs()
 , rsrambankptr_(0)
 , wsrambankptr_(0)
 , memchunk_(0)
+, mmapchunk_(0)
 , rambankdata_(0)
 , wramdataend_(0)
 , oamDmaSrc_(oam_dma_src_off)
@@ -38,10 +45,80 @@ MemPtrs::MemPtrs()
 }
 
 MemPtrs::~MemPtrs() {
+	if (mmapchunk_ != NULL) {
+		munmap((void *)mmapchunk_, 0);
+		mmapchunk_ = NULL;
+		memchunk_ = NULL;
+	}
 	delete []memchunk_;
 }
 
+bool MemPtrs::reset(unsigned const rombanks, unsigned const rambanks, unsigned const wrambanks, const char *mmapfile) {
+	if (mmapchunk_ != NULL) {
+		munmap((void *)mmapchunk_, 0);
+		mmapchunk_ = NULL;
+		memchunk_ = NULL;
+	}
+	delete []memchunk_;
+
+	int pagesize = sysconf(_SC_PAGE_SIZE);
+	int beforerom = (((
+				0x4000
+			) - 1) | (pagesize - 1)) + 1;
+	
+	int afterrom = (((
+				rombanks * 0x4000ul
+				+ 0x4000
+				+ rambanks * 0x2000ul
+				+ wrambanks * 0x1000ul
+				+ 0x4000
+			) - 1) | (pagesize - 1)) + 1;
+
+	int fd = open(mmapfile, O_RDONLY);
+	if (fd < 0) return false;
+
+	mmapchunk_ = (unsigned char *)mmap(NULL, (beforerom + afterrom),
+			PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	if (mmapchunk_ == MAP_FAILED) {
+		mmapchunk_ = NULL;
+		close(fd);
+		return false;
+	}
+	if (mmap(mmapchunk_ + beforerom, rombanks * 0x4000ul,
+			PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_FIXED, fd, 0) == MAP_FAILED) {
+		munmap((void *)mmapchunk_, 0);
+		mmapchunk_ = NULL;
+		close(fd);
+		return false;
+	}
+	close(fd);
+	memchunk_ = mmapchunk_ + beforerom - 0x4000ul;
+
+	romdata_[0] = romdata();
+	rambankdata_ = romdata_[0] + rombanks * 0x4000ul + 0x4000;
+	wramdata_[0] = rambankdata_ + rambanks * 0x2000ul;
+	wramdataend_ = wramdata_[0] + wrambanks * 0x1000ul;
+
+	std::memset(rdisabledRamw(), 0xFF, 0x2000);
+
+	oamDmaSrc_ = oam_dma_src_off;
+	rmem_[0x3] = rmem_[0x2] = rmem_[0x1] = rmem_[0x0] = romdata_[0];
+	rmem_[0xC] = wmem_[0xC] = wramdata_[0] - 0xC000;
+	rmem_[0xE] = wmem_[0xE] = wramdata_[0] - 0xE000;
+	setRombank(1);
+	setRambank(0, 0);
+	setVrambank(0);
+	setWrambank(1);
+
+	return true;
+}
+
 void MemPtrs::reset(unsigned const rombanks, unsigned const rambanks, unsigned const wrambanks) {
+	if (mmapchunk_ != NULL) {
+		munmap((void *)mmapchunk_, 0);
+		mmapchunk_ = NULL;
+		memchunk_ = NULL;
+	}
 	delete []memchunk_;
 	memchunk_ = new unsigned char[
 		  0x4000
