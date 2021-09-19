@@ -13,7 +13,7 @@ elif target == 'rs90':
     include_path = ' -I/opt/rs90-toolchain/mipsel-rs90-linux-musl/sysroot/usr/include'
     bin_path = '/opt/rs90-toolchain/usr/bin/mipsel-linux-'
     version_defines = ' -DVERSION_RS90'
-    extra_cflags = ' -DUSE_MMAP -Ofast -fdata-sections -fno-common -fno-PIC -flto'
+    extra_cflags = ' -DUSE_MMAP -DDEFAULT_PAL_BGB -Ofast -fdata-sections -fno-common -fno-PIC -flto'
     print("Building Gambatte library with RS90 toolchain...")
 elif target == 'retrofw':
     include_path = ' -I/opt/rs97-toolchain/mipsel-buildroot-linux-uclibc/sysroot/usr/include'

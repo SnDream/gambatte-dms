@@ -15,7 +15,7 @@ elif target == 'rs90':
     bin_path = '/opt/rs90-toolchain/usr/bin/mipsel-linux-'
     sdl_path = '/opt/rs90-toolchain/usr/mipsel-rs90-linux-musl/sysroot/usr/bin/'
     version_defines = ' -DVERSION_RS90'
-    extra_cflags = ' -DUSE_MMAP -Ofast -fdata-sections -fno-common -fno-PIC -flto'
+    extra_cflags = ' -DUSE_MMAP -DDEFAULT_PAL_BGB -Ofast -fdata-sections -fno-common -fno-PIC -flto'
     print("Building Gambatte SDL with RS90 toolchain...")
 elif target == 'retrofw':
     include_path = ' -I/opt/rs97-toolchain/mipsel-buildroot-linux-uclibc/sysroot/usr/include'

@@ -2100,6 +2100,7 @@ void loadPalette(std::string palettefile){
 		} else {
 		    for (int i = 0; i < 3; ++i) {
 		        for (int k = 0; k < 4; ++k) {
+#ifndef DEFAULT_PAL_BGB
 		            if(k == 0)
 		                value = 0x64960a;
 		            if(k == 1)
@@ -2108,10 +2109,24 @@ void loadPalette(std::string palettefile){
 		                value = 0x084e3c;
 		            if(k == 3)
 		                value = 0x003236;
+#else
+		            if(k == 0)
+		                value = 0xe0f8d0;
+		            if(k == 1)
+		                value = 0x88c070;
+		            if(k == 2)
+		                value = 0x346856;
+		            if(k == 3)
+		                value = 0x081820;
+#endif
 		            gambatte_p->setDmgPaletteColor(i, k, value);
 		        }
 		    }
+#ifndef DEFAULT_PAL_BGB
 	    	set_menu_palette(0x64960a, 0x1b7e3e, 0x084e3c, 0x003236);
+#else
+	    	set_menu_palette(0xe0f8d0, 0x88c070, 0x346856, 0x081820);
+#endif
 		}
 		return;
 	} else {
@@ -2155,6 +2170,7 @@ void loadPalette(std::string palettefile){
 					} else {
 					    for (int i = 0; i < 3; ++i) {
 					        for (int k = 0; k < 4; ++k) {
+#ifndef DEFAULT_PAL_BGB
 					            if(k == 0)
 					                value = 0x64960a;
 					            if(k == 1)
@@ -2163,10 +2179,24 @@ void loadPalette(std::string palettefile){
 					                value = 0x084e3c;
 					            if(k == 3)
 					                value = 0x003236;
+#else
+					            if(k == 0)
+					                value = 0xe0f8d0;
+					            if(k == 1)
+					                value = 0x88c070;
+					            if(k == 2)
+					                value = 0x346856;
+					            if(k == 3)
+					                value = 0x081820;
+#endif
 					            gambatte_p->setDmgPaletteColor(i, k, value);
 					        }
 					    }
+#ifndef DEFAULT_PAL_BGB
 				    	set_menu_palette(0x64960a, 0x1b7e3e, 0x084e3c, 0x003236);
+#else
+				    	set_menu_palette(0xe0f8d0, 0x88c070, 0x346856, 0x081820);
+#endif
 					}
 					return;
 				}
