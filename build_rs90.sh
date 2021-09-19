@@ -10,9 +10,9 @@ echo "cd gambatte_sdl && scons"
 mv gambatte_sdl/gambatte_sdl gambatte_sdl/gambatte-dms.rs90
 
 echo "cd gambatte_sdl && scons -c"
-(cd gambatte_sdl && scons -c)
+(cd gambatte_sdl && scons -c target=rs90)
 echo "cd libgambatte && scons -c"
-(cd libgambatte && scons -c)
+(cd libgambatte && scons -c target=rs90)
 echo "rm -f *gambatte*/config.log"
 rm -f *gambatte*/config.log
 echo "rm -rf *gambatte*/.scon*"
