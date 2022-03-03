@@ -186,7 +186,7 @@ public:
 #ifndef VERSION_RS90
 	, periods_(4)
 #else
-	, periods_(2)
+	, periods_(4)
 #endif
 	{
 	}

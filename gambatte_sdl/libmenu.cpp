@@ -268,7 +268,7 @@ void openMenuAudio(){
 #ifdef VERSION_GCW0
 	Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1792);
 #elif VERSION_RS90
-	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 1024);
+	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 1792);
 #elif VERSION_RETROFW
 	Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024);
 #elif defined VERSION_BITTBOY || defined VERSION_POCKETGO
