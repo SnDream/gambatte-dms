@@ -1262,6 +1262,12 @@ static void callback_scaler(menu_t *caller_menu) {
     }
 #endif
 
+#else /* VERSION_RS90 */
+        menu_entry = new_menu_entry(0);
+        menu_entry_set_text(menu_entry, "GBA-like");
+        menu_add_entry(menu, menu_entry);
+        menu_entry->callback = callback_selectedscaler;
+
 #endif
     menu->selected_entry = currentEntryInList(menu, selectedscaler, 0);
     

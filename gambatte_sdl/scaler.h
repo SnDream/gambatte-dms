@@ -48,6 +48,8 @@ void fullscreen_crt3(uint32_t* dst, uint32_t* src);
 void scaleborder15x_crt3(uint32_t* dst, uint32_t* src);
 void scaleborder166x_crt3(uint32_t* dst, uint32_t* src);
 
+void scale15x_gbalike(uint32_t *to, uint32_t *from);
+
 #ifdef __cplusplus
 }
 #endif

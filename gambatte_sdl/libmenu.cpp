@@ -1736,11 +1736,24 @@ void paint_border(SDL_Surface *surface){
     	SDL_BlitSurface(borderimg, &rect, surface, NULL);
 	}
 #else
-	rect.x = 0;
-	rect.y = 0;
-	rect.w = 240;
-	rect.h = 160;
-	SDL_BlitSurface(borderimg, &rect, surface, NULL);
+	if (selectedscaler == "GBA-like") {
+		rect.x = 0;
+		rect.y = 0;
+		rect.w = 240;
+		rect.h = 8;
+		rectb.x = 160-8;
+		rectb.y = 0;
+		rectb.w = 240;
+		rectb.h = 8;
+		SDL_FillRect(surface, &rect, barcolor);
+		SDL_FillRect(surface, &rectb, barcolor);
+	} else {
+		rect.x = 0;
+		rect.y = 0;
+		rect.w = 240;
+		rect.h = 160;
+		SDL_BlitSurface(borderimg, &rect, surface, NULL);
+	}
 #endif
 }
 

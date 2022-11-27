@@ -680,12 +680,18 @@ void SdlBlitter::applyScalerToSurface(SDL_Surface *sourcesurface) {
         }
 	}
 #else
-	SDL_Rect dst;
-	dst.x = (screen->w - sourcesurface->w) / 2;
-	dst.y = (screen->h - sourcesurface->h) / 2;
-	dst.w = sourcesurface->w;
-	dst.h = sourcesurface->h;
-	SDL_BlitSurface(sourcesurface, NULL, screen, &dst);
+	if (selectedscaler == "GBA-like") {
+		size_t offset;
+		offset = (2 * (240 - 240) / 2) + ((160 - 144) / 2) * screen->pitch;
+		scale15x_gbalike((uint32_t*)((uint8_t *)screen->pixels + offset), (uint32_t*)sourcesurface->pixels);
+	} else {
+		SDL_Rect dst;
+		dst.x = (screen->w - sourcesurface->w) / 2;
+		dst.y = (screen->h - sourcesurface->h) / 2;
+		dst.w = sourcesurface->w;
+		dst.h = sourcesurface->h;
+		SDL_BlitSurface(sourcesurface, NULL, screen, &dst);
+	}
 #endif
 }
 

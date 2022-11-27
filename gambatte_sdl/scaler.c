@@ -2012,3 +2012,48 @@ void scaleborder166x_crt3(uint32_t* dst, uint32_t* src) //192x144 to 576x432
         }
     }
 }
+
+void scale15x_gbalike(uint32_t *to, uint32_t *from)
+{
+    /* Before:
+     *    a b c d
+     *
+     * After (parenthesis = average):
+     *    a      (a,b)      b      c      (c,d)      d
+     */
+
+    uint32_t reg1, reg2, reg4, reg5;
+    unsigned int x, y;
+
+    for (y=0; y<144; y++) {
+        for (x=0; x<240/6; x++) {
+            prefetch(to+4, 1);
+
+            /* Read b-a */
+            reg1 = *from++;
+            reg5 = reg1 >> 16;
+            if (unlikely((reg1 & 0xffff) != reg5)) {
+                reg2 = (reg1 & 0xf7de0000) >> 1;
+                reg1 = (reg1 & 0xffff) + reg2 + ((reg1 & 0xf7de) << 15);
+            }
+
+            /* Write (a,b)-a */
+            *to++ = reg1;
+
+            /* Read d-c */
+            reg1 = *from++;
+            reg4 = reg1 << 16;
+
+            /* Write c-b */
+            reg5 |= reg4;
+            *to++ = reg5;
+
+            /* Write d-(c,d) */
+            if (unlikely((reg1 & 0xffff0000) != reg4)) {
+                reg2 = (reg1 & 0xf7def7de) >> 1;
+                reg1 = (reg1 & 0xffff0000) | ((reg2 + (reg2 >> 16)) & 0xffff);
+            }
+            *to++ = reg1;
+        }
+    }
+}
