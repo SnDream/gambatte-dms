@@ -31,7 +31,9 @@ static SDL_RWops *RWops;
 #ifdef VERSION_GCW0
 static std::string gamedir = ("/media/data/roms");
 #elif VERSION_RS90
-static std::string gamedir = ("/media/data/roms");
+static std::string gamedir = (homedir + "/roms");
+#elif VERSION_RG99
+static std::string gamedir = (homedir + "/roms");
 #elif VERSION_RETROFW
 static std::string gamedir = (homedir + "/roms");
 #elif defined VERSION_BITTBOY || defined VERSION_POCKETGO

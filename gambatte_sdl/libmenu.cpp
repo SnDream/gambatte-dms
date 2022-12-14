@@ -56,7 +56,7 @@ Mix_Chunk *menusound_move = NULL;
 Mix_Chunk *menusound_ok = NULL;
 
 // Default config values
-#ifndef VERSION_RS90
+#if !defined(VERSION_RS90) && !defined(VERSION_RG99)
 int showfps = 0, ghosting = 1, biosenabled = 0, colorfilter = 0, gameiscgb = 0, buttonlayout = 0, stereosound = 1, prefercgb = 1, ffwhotkey = 1, stateautoload = 0, stateautosave = 0;
 #else
 int showfps = 0, ghosting = 0, biosenabled = 0, colorfilter = 0, gameiscgb = 0, buttonlayout = 0, stereosound = 1, prefercgb = 1, ffwhotkey = 1, stateautoload = 0, stateautosave = 0;
@@ -268,6 +268,8 @@ void openMenuAudio(){
 #ifdef VERSION_GCW0
 	Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1792);
 #elif VERSION_RS90
+	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 1792);
+#elif VERSION_RG99
 	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 1792);
 #elif VERSION_RETROFW
 	Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024);
@@ -1741,8 +1743,8 @@ void paint_border(SDL_Surface *surface){
 		rect.y = 0;
 		rect.w = 240;
 		rect.h = 8;
-		rectb.x = 160-8;
-		rectb.y = 0;
+		rectb.x = 0;
+		rectb.y = 160-8;
 		rectb.w = 240;
 		rectb.h = 8;
 		SDL_FillRect(surface, &rect, barcolor);

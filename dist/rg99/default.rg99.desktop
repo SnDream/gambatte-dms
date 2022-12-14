@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Gambatte-DMS
+Comment=GB/GBC emulator
+Exec=gambatte-dms.rg99 -y %f
+Terminal=false
+Type=Application
+StartupNotify=true
+Icon=gambatte_dms
+Categories=emulators;
+X-OD-NeedsDownscaling=false
+X-OD-Manual=manual.txt
+MimeType=application/x-gameboy-rom;application/x-gbc-rom;application/x-gameboy-color-rom;

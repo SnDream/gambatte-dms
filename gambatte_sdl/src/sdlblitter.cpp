@@ -98,6 +98,7 @@ void SdlBlitter::CheckIPU(){
 	std::string ipu_RetroFW20 = ("/proc/jz/ipu");
 	std::string ipu_OpenDingux = ("/sys/devices/platform/13080000.ipu");
 
+#if !defined(VERSION_RS90) && !defined(VERSION_RG99)
 	aspect_ratio_file = fopen(ipu_OpenDinguxLegacy.c_str(), "r+");
 	if (aspect_ratio_file != NULL) {
 		fclose(aspect_ratio_file);
@@ -126,6 +127,8 @@ void SdlBlitter::CheckIPU(){
 		printf("Detected IPU scaling - OpenDingux\n");
 		return;
 	}
+#endif
+
 	printf("Could not detect IPU scaling\n");
 	return;
 }
@@ -134,6 +137,8 @@ void SdlBlitter::SetVid(int w, int h, int bpp){
 #ifdef VERSION_GCW0
 	screen = SDL_SetVideoMode(w, h, bpp, SDL_HWSURFACE | SDL_TRIPLEBUF);
 #elif VERSION_RS90
+	screen = SDL_SetVideoMode(w, h, bpp, SDL_HWSURFACE | SDL_TRIPLEBUF);
+#elif VERSION_RG99
 	screen = SDL_SetVideoMode(w, h, bpp, SDL_HWSURFACE | SDL_TRIPLEBUF);
 #elif VERSION_RETROFW
 	screen = SDL_SetVideoMode(w, h, bpp, SDL_HWSURFACE | SDL_TRIPLEBUF);

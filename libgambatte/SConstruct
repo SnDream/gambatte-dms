@@ -15,6 +15,12 @@ elif target == 'rs90':
     version_defines = ' -DVERSION_RS90'
     extra_cflags = ' -DUSE_MMAP -DDEFAULT_PAL_BGB -Ofast -fdata-sections -mno-fp-exceptions -mno-check-zero-division -mframe-header-opt -fno-common -mips32 -fno-PIC -mno-abicalls -flto -fwhole-program -fno-stack-protector -fomit-frame-pointer -falign-functions=1 -falign-jumps=1 -falign-loops=1 -fno-caller-saves'
     print("Building Gambatte library with RS90 toolchain...")
+elif target == 'rg99':
+    include_path = ' -I/opt/rs90-toolchain/mipsel-rs90-linux-musl/sysroot/usr/include'
+    bin_path = '/opt/rs90-toolchain/usr/bin/mipsel-linux-'
+    version_defines = ' -DVERSION_RG99'
+    extra_cflags = ' -DUSE_MMAP -Ofast -fdata-sections -mno-fp-exceptions -mno-check-zero-division -mframe-header-opt -fno-common -mips32 -fno-PIC -mno-abicalls -flto -fwhole-program -fno-stack-protector -fomit-frame-pointer -falign-functions=1 -falign-jumps=1 -falign-loops=1 -fno-caller-saves'
+    print("Building Gambatte library with RS90 toolchain...")
 elif target == 'retrofw':
     include_path = ' -I/opt/rs97-toolchain/mipsel-buildroot-linux-uclibc/sysroot/usr/include'
     bin_path = '/opt/rs97-toolchain/bin/mipsel-linux-'
